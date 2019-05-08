@@ -1,7 +1,20 @@
 import { ThunkAction } from "redux-thunk";
+import { StringLiteral } from "@babel/types";
 
 // ICalendarEvents interface
-export interface ICalendarEvents {}
+export interface ICalendarEvents {
+  summary: string;
+  start: IStart;
+  end: IEnd;
+}
+
+export interface IStart {
+  date: string;
+}
+
+export interface IEnd {
+  date: string;
+}
 
 // action types
 export const FETCH_CALENDAR_EVENTS = "FETCH_CALENDAR_EVENTS";
