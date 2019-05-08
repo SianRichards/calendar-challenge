@@ -26,6 +26,12 @@ class CalendarContainer extends React.Component<
   IState
 > {
   public state = { filteredSearch: "", filteredEvents: [] };
+  public newStartDates = this.props.calendarEvents.filter(event =>
+    Date.parse(event.start.date)
+  );
+  public newEndDates = this.props.calendarEvents.filter(event =>
+    Date.parse(event.end.date)
+  );
 
   public componentDidMount = () => {
     this.props.fetchCalendar();
@@ -40,14 +46,31 @@ class CalendarContainer extends React.Component<
   public updateFilteredSearch = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    // console.log(this.newStartDates);
     const newSearchText = event.target.value;
     this.setState({ filteredSearch: newSearchText });
-    console.log(this.state);
     const filteredDates = this.props.calendarEvents.filter(event =>
       event.summary.toLowerCase().includes(newSearchText.toLowerCase())
     );
-    console.log(filteredDates);
     this.setState({ filteredEvents: filteredDates });
+  };
+
+  public startDateCompare = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const userStartSelect = event.target.value;
+    const startDates = this.props.calendarEvents.filter(
+      event => userStartSelect < event.start.date
+    );
+    console.log(startDates);
+    this.setState({ filteredEvents: startDates });
+  };
+
+  public endDateCompare = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const userEndSelect = event.target.value;
+    const endDates = this.props.calendarEvents.filter(
+      event => userEndSelect > event.end.date
+    );
+    console.log(endDates);
+    this.setState({ filteredEvents: endDates });
   };
 
   public render() {
@@ -58,6 +81,20 @@ class CalendarContainer extends React.Component<
             type="text"
             placeholder="search..."
             onChange={this.updateFilteredSearch}
+          />
+          <input
+            type="date"
+            id="start"
+            min="2019-05-01"
+            max="2019-06-30"
+            onChange={this.startDateCompare}
+          />
+          <input
+            type="date"
+            id="start"
+            min="2019-05-01"
+            max="2019-06-30"
+            onChange={this.endDateCompare}
           />
           <div className={styles.calendar}>
             {this.state.filteredEvents.map((calendarEvent, index) => (
