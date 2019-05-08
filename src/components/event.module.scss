@@ -5,10 +5,18 @@
   color: $primary-color-1;
   background-color: $primary-color-2;
   padding: $padding;
-  margin: $margin;
+  margin-left: $margin;
+  margin-right: $margin;
+  margin-bottom: $margin;
+  margin-top: 0px;
   height: auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   font-size: 20px;
+  .title {
+    background-color: #cfea8a;
+    color: #55594d;
+    width: 100%;
+  }
 }

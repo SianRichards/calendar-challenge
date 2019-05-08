@@ -17,37 +17,53 @@ export interface IReduxProps {
 }
 
 export interface IState {
-  oneClicked: boolean;
-  filterDate: string;
+  filteredSearch: string;
+  filteredEvents: any[];
 }
 
 class CalendarContainer extends React.Component<
   IReactProps & IReduxProps,
   IState
 > {
-  public state = { oneClicked: false, filterDate: "" };
+  public state = { filteredSearch: "", filteredEvents: [] };
 
   public componentDidMount = () => {
     this.props.fetchCalendar();
   };
 
+  public componentDidUpdate(prevProps: IReduxProps) {
+    if (prevProps.calendarEvents !== this.props.calendarEvents) {
+      this.setState({ filteredEvents: this.props.calendarEvents });
+    }
+  }
+
+  public updateFilteredSearch = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newSearchText = event.target.value;
+    this.setState({ filteredSearch: newSearchText });
+    console.log(this.state);
+    const filteredDates = this.props.calendarEvents.filter(event =>
+      event.summary.toLowerCase().includes(newSearchText.toLowerCase())
+    );
+    console.log(filteredDates);
+    this.setState({ filteredEvents: filteredDates });
+  };
+
   public render() {
     return (
       <React.Fragment>
-        <button type="button">06-07/05/2019</button>
-        <button type="button">07-08/05/2019</button>
-        <button type="button">22-23/05/2019</button>
-        <div className={styles.calendar}>
-          <p className={styles.day}>Monday</p>
-          <p className={styles.day}>Tuesday</p>
-          <p className={styles.day}>Wednesday</p>
-          <p className={styles.day}>Thursday</p>
-          <p className={styles.day}>Friday</p>
-          <p className={styles.day}>Saturday</p>
-          <p className={styles.day}>Sunday</p>
-          {this.props.calendarEvents.map((calendarEvent, index) => (
-            <Event key={index} calendarEvent={calendarEvent} />
-          ))}
+        <div>
+          <input
+            type="text"
+            placeholder="search..."
+            onChange={this.updateFilteredSearch}
+          />
+          <div className={styles.calendar}>
+            {this.state.filteredEvents.map((calendarEvent, index) => (
+              <Event key={index} calendarEvent={calendarEvent} />
+            ))}
+          </div>
         </div>
       </React.Fragment>
     );
