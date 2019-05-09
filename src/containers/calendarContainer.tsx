@@ -76,31 +76,38 @@ class CalendarContainer extends React.Component<
   public render() {
     return (
       <React.Fragment>
-        <div>
+        <div className={styles.input}>
           <input
+            className={styles.search}
             type="text"
             placeholder="search..."
             onChange={this.updateFilteredSearch}
           />
-          <input
-            type="date"
-            id="start"
-            min="2019-05-01"
-            max="2019-06-30"
-            onChange={this.startDateCompare}
-          />
-          <input
-            type="date"
-            id="start"
-            min="2019-05-01"
-            max="2019-06-30"
-            onChange={this.endDateCompare}
-          />
-          <div className={styles.calendar}>
-            {this.state.filteredEvents.map((calendarEvent, index) => (
-              <Event key={index} calendarEvent={calendarEvent} />
-            ))}
+          <div>
+            <p>Show events after selected date</p>
+            <input
+              type="date"
+              id="start"
+              min="2019-05-01"
+              max="2019-06-30"
+              onChange={this.startDateCompare}
+            />
           </div>
+          <div>
+            <p>Show events before selected date</p>
+            <input
+              type="date"
+              id="start"
+              min="2019-05-01"
+              max="2019-06-30"
+              onChange={this.endDateCompare}
+            />
+          </div>
+        </div>
+        <div className={styles.calendar}>
+          {this.state.filteredEvents.map((calendarEvent, index) => (
+            <Event key={index} calendarEvent={calendarEvent} />
+          ))}
         </div>
       </React.Fragment>
     );

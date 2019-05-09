@@ -8,7 +8,7 @@
   margin-left: $margin;
   margin-right: $margin;
   margin-bottom: $margin;
-  margin-top: 0px;
+  margin-top: $margin;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -18,5 +18,14 @@
     background-color: #cfea8a;
     color: #55594d;
     width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+}
+
+.event:hover {
+  opacity: 0.5;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
