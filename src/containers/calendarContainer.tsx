@@ -26,12 +26,13 @@ class CalendarContainer extends React.Component<
   IState
 > {
   public state = { filteredSearch: "", filteredEvents: [] };
-  public newStartDates = this.props.calendarEvents.filter(event =>
-    Date.parse(event.start.date)
-  );
-  public newEndDates = this.props.calendarEvents.filter(event =>
-    Date.parse(event.end.date)
-  );
+  public newEvents: ICalendarEvents[] = [];
+  // public newStartDates = this.props.calendarEvents.filter(event =>
+  //   Date.parse(event.start.date)
+  // );
+  // public newEndDates = this.props.calendarEvents.filter(event =>
+  //   Date.parse(event.end.date)
+  // );
 
   public componentDidMount = () => {
     this.props.fetchCalendar();
@@ -52,16 +53,19 @@ class CalendarContainer extends React.Component<
     const filteredDates = this.props.calendarEvents.filter(event =>
       event.summary.toLowerCase().includes(newSearchText.toLowerCase())
     );
-    this.setState({ filteredEvents: filteredDates });
+
+    // this.setState({ filteredEvents: filteredDates });
   };
 
   public startDateCompare = (event: React.ChangeEvent<HTMLInputElement>) => {
     const userStartSelect = event.target.value;
     const startDates = this.props.calendarEvents.filter(
-      event => userStartSelect < event.start.date
+      event => userStartSelect <= event.start.date
     );
-    console.log(startDates);
-    this.setState({ filteredEvents: startDates });
+    this.newEvents.push(startDates);
+    // console.log(startDates);
+    // this.setState({ filteredEvents: startDates });
+    // return startDates;
   };
 
   public endDateCompare = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +73,9 @@ class CalendarContainer extends React.Component<
     const endDates = this.props.calendarEvents.filter(
       event => userEndSelect > event.end.date
     );
-    console.log(endDates);
+    // const endDatesWithStart = this.state.filteredEvents.filter(
+    //   event => userEndSelect > event.end.date
+    // );
     this.setState({ filteredEvents: endDates });
   };
 
@@ -97,7 +103,7 @@ class CalendarContainer extends React.Component<
             <p>Show events before selected date</p>
             <input
               type="date"
-              id="start"
+              id="end"
               min="2019-05-01"
               max="2019-06-30"
               onChange={this.endDateCompare}
